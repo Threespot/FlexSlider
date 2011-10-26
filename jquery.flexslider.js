@@ -12,14 +12,15 @@
 ;(function ($) {
   
   //FlexSlider: Object Instance
-  $.flexslider = function(el, options) {
+  $.flexslider = function(el, options, callback) {
     var slider = el;
+    callback(slider);
 
     slider.init = function() {
       slider.vars = $.extend({}, $.flexslider.defaults, options);
       slider.data('flexslider', true);
       slider.container = $('.slides', slider);
-      slider.slides = $('.slides > li', slider);
+      slider.slides = $('.slide', slider);
       slider.count = slider.slides.length;
       slider.animating = false;
       slider.currentSlide = slider.vars.slideToStart;
@@ -69,7 +70,7 @@
           slider.container.append(slider.slides.filter(':first').clone().addClass('clone')).prepend(slider.slides.filter(':last').clone().addClass('clone'));
         }
         //create newSlides to capture possible clones
-        slider.newSlides = $('.slides > li', slider);
+        slider.newSlides = $('.slide', slider);
         var sliderOffset = (-1 * (slider.currentSlide + slider.cloneOffset));
         if (slider.vertical) {
           slider.newSlides.css({"display": "block", "width": "100%", "float": "left"});
@@ -567,13 +568,13 @@
   }
   
   //FlexSlider: Plugin Function
-  $.fn.flexslider = function(options) {
+  $.fn.flexslider = function(options, callback) {
     return this.each(function() {
-      if ($(this).find('.slides li').length == 1) {
-        $(this).find('.slides li').fadeIn(400);
+      if ($(this).find('.slide').length == 1) {
+        $(this).find('.slide').fadeIn(400);
       }
       else if ($(this).data('flexslider') != true) {
-        new $.flexslider($(this), options);
+        new $.flexslider($(this), options, callback);
       }
     });
   }  
